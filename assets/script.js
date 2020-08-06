@@ -44,15 +44,16 @@ function populateQuestions() {
     questionEl.textContent = questions[questionNumber].question;
     for (let i = 0; i < questions[questionNumber].answers.length; i++) {
         var li = document.createElement('li');
-        li.textContent = questions[questionNumber].answers[i];
-        li.id = i;
-        answerList.appendChild(li);        
+        answerList.appendChild(li);
+        var answerBtn = document.createElement('button');
+        answerBtn.id = i;
+        answerBtn.className = 'btn btn-primary m-1';
+        answerBtn.textContent = questions[questionNumber].answers[i];
+        li.appendChild(answerBtn);
     }
     questionNumber++;
-
 }
 
-//add the first object in the questions object to the page elements
 //if a user selects the wrong answer, remove time from the timer variable
 //if the user selects the correct answer, change the page elements to the new question in the questions array
 //if the timer reaches zero or all questions are answered:
@@ -65,3 +66,4 @@ startBtn.addEventListener('click', function() {
     timer();
     populateQuestions();
 });
+
