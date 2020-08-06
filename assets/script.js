@@ -13,10 +13,13 @@
 var startBtn = document.getElementById('start');
 var introContainer = document.getElementById('intro');
 var timerEl = document.getElementById('timer');
+var questionEl = document.getElementById('question');
+var answerList = document.getElementById('answer-list');
 
 
 var interval; //undefined variable for timer setInterval
 var timeLeft = 75;
+var questionNumber = 0;
 
 var questions = [
     {
@@ -37,9 +40,19 @@ function timer() {
     }, 1000);
 }
 
-//setup a basic bootstrap page with a start button and elements to fill in the question and answers.
-//Place an element that contains a timer on the page, setup a setInterval that counts down
-//add the first object in the questions array to the page elements
+function populateQuestions() {
+    questionEl.textContent = questions[questionNumber].question;
+    for (let i = 0; i < questions[questionNumber].answers.length; i++) {
+        var li = document.createElement('li');
+        li.textContent = questions[questionNumber].answers[i];
+        li.id = i;
+        answerList.appendChild(li);        
+    }
+    questionNumber++;
+
+}
+
+//add the first object in the questions object to the page elements
 //if a user selects the wrong answer, remove time from the timer variable
 //if the user selects the correct answer, change the page elements to the new question in the questions array
 //if the timer reaches zero or all questions are answered:
@@ -50,4 +63,5 @@ startBtn.addEventListener('click', function() {
     introContainer.classList.add('d-none');
     timerEl.textContent = timeLeft; // just so time immediately shows upon pressing start button
     timer();
+    populateQuestions();
 });
