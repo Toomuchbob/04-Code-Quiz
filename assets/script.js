@@ -1,10 +1,3 @@
-// GIVEN I am taking a code quiz
-// WHEN I click the start button
-// THEN a timer starts and I am presented with a question
-// WHEN I answer a question
-// THEN I am presented with another question
-// WHEN I answer a question incorrectly
-// THEN time is subtracted from the clock
 // WHEN all questions are answered or the timer reaches 0
 // THEN the game is over
 // WHEN the game is over
@@ -15,6 +8,7 @@ var introContainer = document.getElementById('intro');
 var timerEl = document.getElementById('timer');
 var questionEl = document.getElementById('question');
 var answerList = document.getElementById('answer-list');
+var examContainer = document.getElementById('exam-questions');
 
 
 var interval; //undefined variable for timer setInterval
@@ -33,37 +27,62 @@ var questions = [
     }
 ]
 
+//set timer on page load
+timerEl.textContent = timeLeft;
+
 function timer() {
     interval = setInterval(function() {
         timeLeft--;
         timerEl.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(interval);
+            console.log('were out of time');
+            //go to enter initials page
+        }
     }, 1000);
 }
 
 function populateQuestions() {
-    questionEl.textContent = questions[questionNumber].question;
-    for (let i = 0; i < questions[questionNumber].answers.length; i++) {
-        var li = document.createElement('li');
-        answerList.appendChild(li);
-        var answerBtn = document.createElement('button');
-        answerBtn.id = i;
-        answerBtn.className = 'btn btn-primary m-1';
-        answerBtn.textContent = questions[questionNumber].answers[i];
-        li.appendChild(answerBtn);
+    if (questionNumber < questions.length) {
+        questionEl.textContent = questions[questionNumber].question;
+        answerList.innerHTML = "";
+        for (let i = 0; i < questions[questionNumber].answers.length; i++) {
+            var li = document.createElement('li');
+            answerList.appendChild(li);
+            var answerBtn = document.createElement('button');
+            answerBtn.id = i;
+            answerBtn.className = 'btn btn-primary m-1';
+            answerBtn.textContent = questions[questionNumber].answers[i];
+            li.appendChild(answerBtn);
+        }
+    } else {
+        console.log('out of questions');
+        //go to enter initials page
     }
-    questionNumber++;
 }
 
-//if a user selects the wrong answer, remove time from the timer variable
-//if the user selects the correct answer, change the page elements to the new question in the questions array
 //if the timer reaches zero or all questions are answered:
-    //clearInterval on the timer variable
     //go to the highscores.html page and let the user fill in their highscore, stored locally.
 
 startBtn.addEventListener('click', function() {
     introContainer.classList.add('d-none');
     timerEl.textContent = timeLeft; // just so time immediately shows upon pressing start button
     timer();
+    examContainer.classList.add('d-block');
     populateQuestions();
 });
 
+answerList.addEventListener('click', function(e) {
+    if (e.target.matches('button')) {
+        var choice = e.target.id;
+        if (choice.toString() === questions[questionNumber].correct) {
+            questionNumber++;
+            populateQuestions();
+        } else {
+            timeLeft = timeLeft - 10;
+            timerEl.textContent = timeLeft;
+            questionNumber++;
+            populateQuestions();
+        }
+    }
+});
