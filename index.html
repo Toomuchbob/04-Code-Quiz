@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
     integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
-    <title>Javascipt Quiz</title>
+    <link rel="stylesheet" href="assets/style.css">
+
+    <title>Javascript Quiz</title>
 
   </head>
 
@@ -31,7 +33,7 @@
       </div>
   </nav>
 
-  <div class="container" id="intro">
+  <div class="container" id="intro-container">
     <div class="row">
       <div class="col text-center mt-5">
           <p>
@@ -42,7 +44,7 @@
     </div>
   </div>
 
-  <div class="container d-none" id='exam-questions'>
+  <div class="container d-none" id='exam-container'>
     <div class="row m-5">
       <div class="col bg-light m-2 p-4">
         <span id="question">Question</span>
@@ -53,10 +55,18 @@
     </div>
   </div>
 
-  <div class="container d-none" id="initials">
-    <div class="col">
-      <h1>Enter your initials</h1>
-      <h2>Your score is: <span id="score"></span></h2>
+  <div class="container d-none" id="initials-container">
+    <div class="row m-5">
+      <div class="col">
+        <h1>Enter your initials</h1>
+        <h2>Your score is: <span id="score"></span></h2>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control bg-primary text-white" placeholder="Enter your initials" aria-label="Enter your initials" aria-describedby="basic-addon2" id='initials-text'>
+            <div class="input-group-append">
+              <button class="btn btn-secondary " type="button" id="initials-submit">Submit</button>
+            </div>
+          </div>
+      </div>
     </div>
   </div>
 

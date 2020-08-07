@@ -1,19 +1,22 @@
-// WHEN all questions are answered or the timer reaches 0
-// THEN the game is over
 // WHEN the game is over
 // THEN I can save my initials and score
 
 var startBtn = document.getElementById('start');
-var introContainer = document.getElementById('intro');
+var introContainer = document.getElementById('intro-container');
 var timerEl = document.getElementById('timer');
 var questionEl = document.getElementById('question');
 var answerList = document.getElementById('answer-list');
-var examContainer = document.getElementById('exam-questions');
+var examContainer = document.getElementById('exam-container');
+var initialsContainer = document.getElementById('initials-container');
+var scoreEl = document.getElementById('score');
+var initialsBtn = document.getElementById('initials-submit');
+var initialsText = document.getElementById('initials-text');
 
 
 var interval; //undefined variable for timer setInterval
 var timeLeft = 75;
 var questionNumber = 0;
+var highScoreObj = [];
 
 var questions = [
     {
@@ -35,11 +38,18 @@ function timer() {
         timeLeft--;
         timerEl.textContent = timeLeft;
         if (timeLeft <= 0) {
-            clearInterval(interval);
-            console.log('were out of time');
-            //go to enter initials page
+            initInitials();
         }
     }, 1000);
+}
+
+function initInitials() {
+    clearInterval(interval);
+    examContainer.classList.remove('d-block')
+    examContainer.classList.add('d-none');
+    initialsContainer.classList.remove('d-none');
+    initialsContainer.classList.add('d-block');
+    scoreEl.textContent = timeLeft;
 }
 
 function populateQuestions() {
@@ -56,13 +66,9 @@ function populateQuestions() {
             li.appendChild(answerBtn);
         }
     } else {
-        console.log('out of questions');
-        //go to enter initials page
+        initInitials();
     }
 }
-
-//if the timer reaches zero or all questions are answered:
-    //go to the highscores.html page and let the user fill in their highscore, stored locally.
 
 startBtn.addEventListener('click', function() {
     introContainer.classList.add('d-none');
@@ -84,5 +90,28 @@ answerList.addEventListener('click', function(e) {
             questionNumber++;
             populateQuestions();
         }
+    }
+});
+
+initialsBtn.addEventListener('click', function() {
+    //go to highscores page
+    //populate page with all highscores in memory
+    if(localStorage.getItem('highScoreObj')) {
+        highScoreObj = JSON.parse(localStorage.getItem('highScoreObj'));
+        highScoreObj.push({
+            initials: initialsText.value,
+            score: timeLeft
+        });
+        localStorage.setItem('highScoreObj', JSON.stringify(highScoreObj));
+        window.location.href = 'highscores.html';
+    } else {
+        highScoreObj = [
+            {
+            initials: initialsText.value,
+            score: timeLeft
+            }
+        ];
+        localStorage.setItem('highScoreObj', JSON.stringify(highScoreObj));
+        window.location.href = 'highscores.html'
     }
 });
