@@ -1,6 +1,3 @@
-// WHEN the game is over
-// THEN I can save my initials and score
-
 var startBtn = document.getElementById('start');
 var introContainer = document.getElementById('intro-container');
 var timerEl = document.getElementById('timer');
@@ -24,9 +21,13 @@ var questions = [
         answers: ['integer', 'float', 'string', 'method'],
         correct: '3'
     }, {
-        question: 'String variable are usually surrounded by which special character?',
+        question: 'String variables are usually surrounded by which special character?',
         answers: ['quotes', 'parenthesis', 'carats', 'square brackets'],
         correct: '0'
+    }, {
+        question: 'Which one of these is NOT falsy?',
+        answers: ['NaN', 'undefined', '[ ]', 'false'],
+        correct: '2'
     }
 ]
 
@@ -94,8 +95,6 @@ answerList.addEventListener('click', function(e) {
 });
 
 initialsBtn.addEventListener('click', function() {
-    //go to highscores page
-    //populate page with all highscores in memory
     if(localStorage.getItem('highScoreObj')) {
         highScoreObj = JSON.parse(localStorage.getItem('highScoreObj'));
         highScoreObj.push({
